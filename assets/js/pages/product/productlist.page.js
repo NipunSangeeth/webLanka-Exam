@@ -7,27 +7,14 @@ parasails.registerPage('productlist', {
     syncing: false,
     cloudError: '',
     formErrors: {},
-    records: '',
-    dataArr: '',
-    status: '',
-    csvUploader: false,
-    infoAlert: false,
-    successAlert: false,
-    saveModelOpen: false,
-    loading: false,
-    alert: false,
-    prepare: false,
-    ready: false,
     err: 0,
 
     itemView: '/product/',
     listView: '/productlist',
-    removeAction: 'removeproduct',
 
     allSelected: false,
     selectedItems: [],
 
-    deleteModelOpen: false,
 
     formData: {
       type: '',
@@ -59,28 +46,6 @@ parasails.registerPage('productlist', {
   //  ╩╝╚╝ ╩ ╚═╝╩╚═╩ ╩╚═╝ ╩ ╩╚═╝╝╚╝╚═╝
   methods: {
 
-    removeItem: function(id) {
-
-      var selectedArr = [];
-      if (id) {
-        selectedArr.push(id);
-      }
-
-      this.selectedItems = selectedArr;
-
-      if (this.selectedItems.length == 0) {
-
-        alert("Please select an item!");
-
-      } else {
-
-        this.deleteModelOpen = true;
-
-      }
-
-    },
-
-
     refresh: function() {
       window.location.href = this.listView;
     },
@@ -98,55 +63,6 @@ parasails.registerPage('productlist', {
     },
     select: function() {
       this.allSelected = false;
-    },
-
-    deleteItems: async function() {
-
-      if (this.selectedItems.length == 0) {
-
-        alert("Please select an item!");
-
-      } else {
-
-        this.deleteModelOpen = true;
-
-      }
-
-    },
-
-    closeDeleteModal: function() {
-
-      this.deleteModelOpen = false;
-      this.cloudError = '';
-
-    },
-
-    handleParsingDeleteForm: function() {
-
-      return {
-        selectedItems: this.selectedItems,
-
-      };
-
-    },
-
-    submittedDeleteForm: function(result) {
-
-      if (result.result) {
-
-        for (i = 0; i < result.result.length; i++) {
-          _.remove(this.data, {
-            id: result.result[i].id
-          });
-        }
-
-        this.deleteModelOpen = false;
-        this.cloudError = '';
-
-        this.$forceUpdate();
-
-      }
-
     },
 
     // ********************** SET FUNCTIONS *************************//

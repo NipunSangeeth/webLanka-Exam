@@ -31,9 +31,6 @@ module.exports = {
 
   fn: async function(inputs, exits) {
 
-    console.log("inputs");
-    console.log(inputs);
-
     // IF EMPTY ALL INPUTS IT MEANS DIRECT LIST
     if (_.isEmpty(inputs)) {
 
@@ -52,12 +49,6 @@ module.exports = {
       if (this.req.session.productList.type && (typeof inputs.type === 'undefined')) {
 
         inputs.type = this.req.session.productList.type;
-
-      }
-
-      if (this.req.session.productList.visibility && (typeof inputs.visibility === 'undefined')) {
-
-        inputs.visibility = this.req.session.productList.visibility;
 
       }
 
