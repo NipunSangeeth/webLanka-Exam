@@ -1,0 +1,88 @@
+<div id="productlist" v-cloak>
+
+
+  <small>
+    <div class="container backend py-5">
+
+      <div class="action-row">
+
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="m-0">Products List</h4>
+          </div>
+          <div class="col-md-6 text-right">
+            <a v-bind:href="itemView" class="btn add">Add New</a>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div id="showResult"></div>
+          <form v-bind:action="listView" method="get" class="form-inline ">
+
+            <select class="custom-select" :class="[formErrors.type ? 'is-invalid' : '']" v-model.trim="formData.type" name=type>
+              <option value="" selected>All Types</option>
+              <option value="0">Samsung</option>
+              <option value="1">Brother</option>
+              <option value="2">HP</option>
+              <option value="3">Cannon</option>
+              <option value="4">Lexmark</option>
+              <option value="5">Dell</option>
+            </select>
+
+            <select class="custom-select  ml-2" :class="[formErrors.type ? 'is-invalid' : '']" v-model.trim="formData.byOrder" name=byOrder>
+              <option value="" selected>Select Order</option>
+              <option value="0">by lowest price</option>
+              <option value="1">by highest price</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary ml-2">Search</button>
+          </form>
+
+          <button @click="clearSearch()" v-if="filter.name != undefined || filter.option != undefined" type="submit" class="btn btn-danger mb-2"><i class="fa fa-times search" aria-hidden="true"></i></button>
+        </div>
+
+      </div>
+
+      <div class="table-responsive pt-4">
+        <table class="table table-bordered border table-striped">
+          <thead>
+            <tr>
+              <th class="text-center"><input type="checkbox" @click="selectAll" v-model="allSelected"></th>
+              <!-- <th class="w-96">id</th> -->
+              <th class="w-5">Name</th>
+              <th class="w-5">Type</th>
+              <th class="w-5">Price($)</th>
+              <th class="w-5">Status</th>
+              <!-- <th class="w-5">Action</th> -->
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in data">
+              <td class="text-center"><input type="checkbox" class="text-center" v-model="selectedItems" @click="select" :value="item.id"></td>
+              <td class="image"><a :href="itemView + item.id">{{item.name}}</a></td>
+              <td class="image">
+                <a v-if="item.type == 0">Samsung</a>
+                <a v-if="item.type == 1">Brother</a>
+                <a v-if="item.type == 2">HP</a>
+                <a v-if="item.type == 3">Cannon</a>
+                <a v-if="item.type == 4">Lexmark</a>
+                <a v-if="item.type == 5">Dell</a>
+              </td>
+              <td class="image"><a>{{item.price}}</a></td>
+              <td class="image"><a>{{item.status == 0 ? 'Brand New' : 'Used'}}</a></td>
+              <!-- <td class="image"><a :href="itemView + item.id">Edit</a></td> -->
+
+            </tr>
+            <tr v-if="data.length <= 0">
+              <td colspan="5" class="text-center">No products found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </small>
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

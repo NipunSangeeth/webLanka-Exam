@@ -1,0 +1,72 @@
+<div id="singleuser" v-cloak>
+
+  <div class="container pt-5 pb-5" v-if="!cloudSuccess">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>{{this.formData.id == 0 ? 'Add User' : 'Edit User'}}</h4>
+      </div>
+    </div>
+    <hr />
+
+    <div class="alert alert-success" role="alert" v-if="saved">
+      User details <b>Saved successfully!</b>
+    </div>
+
+    <div class="mx-auto">
+      <ajax-form action="saveUser" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-errors.sync="formErrors" :form-data="formData" :form-rules="formRules" @submitted="submittedForm()">
+        <div class="row">
+          <div class="col-6">
+            <label for="full-name">Full name</label>
+            <input class="form-control" id="full-name" type="text" :class="[formErrors.fullName ? 'is-invalid' : '']" v-model.trim="formData.fullName" placeholder="" autocomplete="name" focus-first>
+            <div class="invalid-feedback" v-if="formErrors.fullName">Please enter your full name.</div>
+          </div>
+          <div class="col-6">
+            <label for="email-address">Email address</label>
+            <input class="form-control" id="email-address" type="email" :class="[formErrors.emailAddress ? 'is-invalid' : '']" v-model.trim="formData.emailAddress" placeholder="" autocomplete="email">
+            <div class="invalid-feedback" v-if="formErrors.emailAddress">Please enter a valid email address.</div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <label for="email-address">Contact Number</label>
+            <input class="form-control" id="email-address" type="text" :class="[formErrors.contact ? 'is-invalid' : '']" v-model.trim="formData.contact" placeholder="" autocomplete="email">
+            <div class="invalid-feedback" v-if="formErrors.contact">Please enter a valid email address.</div>
+          </div>
+          <div class="col-6">
+            <label for="email-address">Address Lines</label>
+            <input class="form-control" id="email-address" type="text" :class="[formErrors.addressLine ? 'is-invalid' : '']" v-model.trim="formData.addressLine" placeholder="" autocomplete="email">
+            <div class="invalid-feedback" v-if="formErrors.addressLine">Please enter a valid email address.</div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <label for="password">Choose a password</label>
+            <input class="form-control" id="password" type="password" :class="[formErrors.password ? 'is-invalid' : '']" v-model.trim="formData.password" placeholder="••••••••" autocomplete="new-password">
+            <div class="invalid-feedback" v-if="formErrors.password">Please enter a password.</div>
+          </div>
+          <div class="col-6">
+            <label for="confirm-password">Confirm password</label>
+            <input class="form-control" id="confirm-password" type="password" :class="[formErrors.confirmPassword ? 'is-invalid' : '']" v-model.trim="formData.confirmPassword" placeholder="••••••••" autocomplete="new-password">
+            <div class="invalid-feedback" v-if="formErrors.confirmPassword">Your password and confirmation do not match.</div>
+          </div>
+        </div>
+        <br>
+
+        <cloud-error v-if="cloudError==='emailAlreadyInUse'">It looks like there's already an account with your email address. If you forgot your password, you can recover it <a href="password/forgot">here</a>.</cloud-error>
+        <cloud-error v-else-if="cloudError"></cloud-error>
+
+
+        <div class="text-right button-footer">
+          <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your information and try again, or <a href="/contact">contact support</a> if the error persists.</small></p>
+          <ajax-button class="btn btn-success" :syncing="syncing">Save</ajax-button>&nbsp;
+          <a href="/userlist"><input type="button" value="Cancel" class="btn btn-outline-danger"></a>&nbsp;<br><br>
+        </div>
+
+      </ajax-form>
+    </div>
+  </div>
+
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

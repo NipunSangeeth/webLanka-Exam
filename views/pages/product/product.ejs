@@ -1,0 +1,70 @@
+<div id="product" v-cloak>
+
+
+  <div class="container pt-5 pb-5" v-if="!cloudSuccess">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>{{this.formData.id == 0 ? 'Add Product' : 'Edit Product'}}</h4>
+      </div>
+    </div>
+    <hr />
+
+    <div class="alert alert-success" role="alert" v-if="saved">
+      Product details <b>Saved successfully!</b>
+    </div>
+
+    <div class="mx-auto">
+      <ajax-form action="saveproduct" :syncing.sync="syncing" :cloud-error.sync="cloudError" :form-errors.sync="formErrors" :form-data="formData" :form-rules="formRules" @submitted="submittedForm()">
+        <div class="row">
+          <div class="col-6">
+            <label for="full-name">Name <span class="text-danger">*</span></label>
+            <input class="form-control" id="name" type="text" :class="[formErrors.name ? 'is-invalid' : '']" v-model.trim="formData.name" placeholder="" autocomplete="name" focus-first>
+            <div class="invalid-feedback" v-if="formErrors.name">Please enter product name.</div>
+          </div>
+          <div class="col-6">
+            <label for="email-address">Type <span class="text-danger">*</span></label>
+            <select class="custom-select" :class="[formErrors.type ? 'is-invalid' : '']" v-model.trim="formData.type">
+              <option value="0">Samsung</option>
+              <option value="1">Brother</option>
+              <option value="2">HP</option>
+              <option value="3">Cannon</option>
+              <option value="4">Lexmark</option>
+              <option value="5">Dell</option>
+            </select>
+            <div class="invalid-feedback" v-if="formErrors.price">Please select type.</div>
+
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-6">
+            <label for="email-address">Price <span class="text-danger">*</span></label>
+            <input class="form-control" id="price" type="text" :class="[formErrors.price ? 'is-invalid' : '']" v-model.trim="formData.price" placeholder="" autocomplete="price">
+            <div class="invalid-feedback" v-if="formErrors.price">Please enter amount.</div>
+          </div>
+          <div class="col-6">
+            <label for="email-address">Status <span class="text-danger">*</span></label>
+            <select class="custom-select" :class="[formErrors.status ? 'is-invalid' : '']" v-model.trim="formData.status">
+              <option value="0">Brand New</option>
+              <option value="1">Used</option>
+            </select>
+            <div class="invalid-feedback" v-if="formErrors.price">Please select status.</div>
+
+          </div>
+        </div>
+        <br>
+
+        <cloud-error v-if="cloudError==='emailAlreadyInUse'">It looks like there's already an account with your email address. If you forgot your password, you can recover it <a href="password/forgot">here</a>.</cloud-error>
+        <cloud-error v-else-if="cloudError"></cloud-error>
+
+        <div class="text-right button-footer">
+          <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your information and try again, or <a href="/price">price support</a> if the error persists.</small></p>
+          <ajax-button class="btn btn-success" :syncing="syncing">Save</ajax-button>&nbsp;
+          <a href="/userlist"><input type="button" value="Cancel" class="btn btn-outline-danger"></a>&nbsp;<br><br>
+        </div>
+
+      </ajax-form>
+    </div>
+  </div>
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>

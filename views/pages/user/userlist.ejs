@@ -1,0 +1,76 @@
+<div id="userlist" v-cloak>
+
+  <small>
+    <div class="container backend py-5">
+      <!-- delete modal with dialogbox --------------------------------------------------------------------------------------------------------------------><% /* "Delete" modal */ %>
+      <modal class="modal fade" v-if="deleteModelOpen" @close="closeDeleteModal()" v-cloak>
+        <div class="modal-header">
+          <h5 class="modal-title text-center">Remove Item</h5>
+        </div>
+        <ajax-form v-bind:action="removeAction" :syncing.sync="syncing" :cloud-error.sync="cloudError" :handle-parsing="handleParsingDeleteForm" @submitted="submittedDeleteForm($event)">
+          <div class="modal-body text-center" v-if="selectedItems.length>0">
+            Are you sure you want to remove selected {{selectedItems.length}} user(s) ?
+          </div>
+          <div class="modal-body text-center" v-else>
+            No Items Selected.
+          </div>
+          <div class="modal-footer flex-row-reverse justify-content-between" v-if="selectedItems.length>0">
+            <p class="text-danger" v-if="cloudError"><small>An error occured while processing your request. Please check your information and try again, or <a href="/contact">contact support</a> if the error persists.</small></p>
+            <ajax-button type="submit" :syncing="syncing" class="btn-danger btn-lg">Yes</ajax-button>
+            <button type="button" class="btn btn-secondary btn-lg" data-dismiss="modal">Cancel</button>
+          </div>
+          <div class="modal-footer" v-else>
+            <button type="button" class="btn btn-lg btn-secondary" data-dismiss="modal">Ok</button>
+          </div>
+        </ajax-form>
+      </modal>
+
+      <!-- delete modal with dialogbox --------------------------------------------------------------------------------------------------------------------><% /* "Delete" modal */ %>
+
+      <div class="action-row">
+
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="m-0">Users List</h4>
+          </div>
+          <div class="col-md-6 text-right">
+            <a v-bind:href="itemView" class="btn add">Add New</a>
+            <a @click="deleteItems()" class="btn delete">Delete</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="table-responsive pt-4">
+        <table class="table table-bordered border table-striped">
+          <thead>
+            <tr>
+              <th class="text-center"><input type="checkbox" @click="selectAll" v-model="allSelected"></th>
+              <th class="w-5">Name</th>
+              <th class="w-5">Email</th>
+              <th class="w-5">Address</th>
+              <!-- <th class="w-5">Action</th> -->
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in data">
+              <td class="text-center"><input type="checkbox" class="text-center" v-model="selectedItems" @click="select" :value="item.id"></td>
+              <td class="image"><a :href="itemView + item.id">{{item.fullName}}</a></td>
+              <td class="image"><a>{{item.emailAddress}}</a></td>
+              <td class="image"><a>{{item.addressLine}}</a></td>
+              <!-- <td class="image"><a :href="itemView + item.id">Edit</a></td> -->
+
+            </tr>
+            <tr v-if="data.length <= 0">
+              <td colspan="5" class="text-center">No users found.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </small>
+
+</div>
+<%- /* Expose server-rendered data as window.SAILS_LOCALS :: */ exposeLocalsToBrowser() %>
